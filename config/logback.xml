@@ -1,0 +1,39 @@
+<configuration scan="true" scanPeriod="10 seconds" debug="false">
+
+	<conversionRule conversionWord="requestId" converterClass="com.iquantex.web.framework.logwrapper.conver.RequestIdConvert" />
+
+	<property name="LOG_DIR" value="/ngdp/ngdplog" />
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<layout class="com.iquantex.web.framework.logwrapper.CustomPatternLayout" >
+			<pattern>[%requestId] [%level] [%d] %logger{0} >> %msg%n</pattern>
+		</layout>
+	</appender>
+
+	<appender name="FILE_DAY"
+		class="com.iquantex.web.framework.logwrapper.RollingFileAppenderWrapper">
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_DIR}/quantex-ngdp.%d{yyyy-MM-dd}.log
+			</fileNamePattern>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+
+		<layout class="com.iquantex.web.framework.logwrapper.CustomPatternLayout">
+			<pattern>[%requestId] [%level] [%d] %logger{0} >> %msg%n</pattern>
+		</layout>
+	</appender>
+
+	<logger name="com.iquantex" level="debug" additivity="false">
+		<appender-ref ref="FILE_DAY" />
+	</logger>
+	<logger name="com.iquantex" level="DEBUG">
+		<appender-ref ref="STDOUT" />
+	</logger>
+		<root level="debug">
+		<appender-ref ref="FILE_DAY" />
+	</root>
+
+	<logger name="java.sql" level="debug">
+		<appender-ref ref="STDOUT" />
+	</logger>
+
+</configuration>
