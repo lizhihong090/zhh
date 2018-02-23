@@ -1,15 +1,26 @@
 package com.ngdp.model;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 import org.apache.ibatis.type.JdbcType;
+
 import tk.mybatis.mapper.annotation.ColumnType;
 
 @Table(name = "`people`")
 public class People {
+	
+	
     @Id
     @Column(name = "`id`")
     @ColumnType(jdbcType = JdbcType.INTEGER)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @NotNull(message = "{people.id.notnull}")
     private Integer id;
 
     @Column(name = "`name`")
@@ -18,6 +29,7 @@ public class People {
 
     @Column(name = "`name_all`")
     @ColumnType(jdbcType = JdbcType.VARCHAR)
+    @Size(min=5,max=10,message="{people.nameAll.size.length.Illegal}")
     private String nameAll;
 
     public static final String TABLE = "`people`";
